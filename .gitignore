@@ -39,3 +39,4 @@
 *.launch
 *.settings/
 *.sublime-workspace
+.idea/
