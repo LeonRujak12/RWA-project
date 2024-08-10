@@ -1,9 +1,6 @@
-// src/items/dto/create-item.dto.ts
-export class CreateItemDto {
-    readonly name: string;
-    readonly description?: string;
-    readonly price: number;
+export class CreateTodoDto {
+    readonly title: string;
+    readonly description: string;
+    readonly projectName: string;
+    readonly isCompleted?: boolean;
 }
-
-
-

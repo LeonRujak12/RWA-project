@@ -1,5 +1,6 @@
-export class UpdateItemDto {
-    readonly name?: string;
+export class UpdateTodoDto {
+    readonly title?: string;
     readonly description?: string;
-    readonly price?: number;
+    readonly projectName?: string;
+    readonly isCompleted?: boolean;
 }

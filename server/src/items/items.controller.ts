@@ -1,38 +1,45 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { ItemsService } from './items.service';
-import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
-import { Item } from './schema/items.schema';
+import { CreateTodoDto } from './dto/create-item.dto';
+import { UpdateTodoDto } from './dto/update-item.dto';
+import { Todo } from './schema/items.schema';
 
-@Controller('items')
+@Controller('todos')
 export class ItemsController {
     constructor(private readonly itemsService: ItemsService) {}
 
     @Post()
-    create(@Body() createItemDto: CreateItemDto): Promise<Item> {
-        return this.itemsService.create(createItemDto);
+    create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
+        return this.itemsService.create(createTodoDto);
     }
 
     @Get()
-    findAll(): Promise<Item[]> {
+    findAll(): Promise<Todo[]> {
         return this.itemsService.findAll();
     }
 
+    @Get('completed')
+    findCompleted(): Promise<Todo[]> {
+        return this.itemsService.findCompleted();
+    }
+
+    @Get('not-completed')
+    findNotCompleted(): Promise<Todo[]> {
+        return this.itemsService.findNotCompleted();
+    }
+
     @Get(':id')
-    findOne(@Param('id') id: string): Promise<Item> {
+    findOne(@Param('id') id: string): Promise<Todo> {
         return this.itemsService.findOne(id);
     }
 
-    @Patch(':id')
-    update(
-        @Param('id') id: string,
-        @Body() updateItemDto: UpdateItemDto,
-    ): Promise<Item> {
-        return this.itemsService.update(id, updateItemDto);
+    @Put(':id')
+    update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {
+        return this.itemsService.update(id, updateTodoDto);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string): Promise<Item> {
+    remove(@Param('id') id: string): Promise<Todo> {
         return this.itemsService.remove(id);
     }
 }

@@ -1,47 +1,56 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Item, ItemDocument } from './schema/items.schema';
-import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
+import { Todo, TodoDocument } from './schema/items.schema';
+import { CreateTodoDto } from './dto/create-item.dto';
+import { UpdateTodoDto } from './dto/update-item.dto';
 
 @Injectable()
 export class ItemsService {
-    constructor(@InjectModel(Item.name) private itemModel: Model<ItemDocument>) {}
+    constructor(@InjectModel(Todo.name) private todoModel: Model<TodoDocument>) {}
 
-    async create(createItemDto: CreateItemDto): Promise<Item> {
-        const newItem = new this.itemModel(createItemDto);
-        return newItem.save();
+    async create(createTodoDto: CreateTodoDto): Promise<Todo> {
+        const newTodo = new this.todoModel(createTodoDto);
+        return newTodo.save();
     }
 
-    async findAll(): Promise<Item[]> {
-        return this.itemModel.find().exec();
+    async findAll(): Promise<Todo[]> {
+        return this.todoModel.find().exec();
     }
 
-    async findOne(id: string): Promise<Item> {
-        const item = await this.itemModel.findById(id).exec();
-        if (!item) {
-            throw new NotFoundException(`Item with ID ${id} not found`);
+    async findOne(id: string): Promise<Todo> {
+        const todo = await this.todoModel.findById(id).exec();
+        if (!todo) {
+            throw new NotFoundException(`Todo with ID ${id} not found`);
         }
-        return item;
+        return todo;
     }
 
-    async update(id: string, updateItemDto: UpdateItemDto): Promise<Item> {
-        const updatedItem = await this.itemModel
-            .findByIdAndUpdate(id, updateItemDto, { new: true })
+    async update(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
+        const updatedTodo = await this.todoModel
+            .findByIdAndUpdate(id, updateTodoDto, { new: true })
             .exec();
-        if (!updatedItem) {
-            throw new NotFoundException(`Item with ID ${id} not found`);
+        if (!updatedTodo) {
+            throw new NotFoundException(`Todo with ID ${id} not found`);
         }
-        return updatedItem;
+        return updatedTodo;
     }
 
-    async remove(id: string): Promise<Item> {
-      /*  const deletedItem = await this.itemModel.findByIdAndRemove(id).exec();
-        if (!deletedItem) {
-            throw new NotFoundException(`Item with ID ${id} not found`);
-        }*/
-        const deletedItem= new this.itemModel();
-        return deletedItem;
+    async remove(id: string): Promise<Todo> {
+        const updatedTodo = await this.todoModel
+            .findByIdAndDelete(id)
+            .exec();
+        if (!updatedTodo) {
+            throw new NotFoundException(`Todo with ID ${id} not found`);
+        }
+        return updatedTodo;
+    }
+
+    async findCompleted(): Promise<Todo[]> {
+        return this.todoModel.find({ isCompleted: true }).exec();
+    }
+
+    async findNotCompleted(): Promise<Todo[]> {
+        return this.todoModel.find({ isCompleted: false }).exec();
     }
 }

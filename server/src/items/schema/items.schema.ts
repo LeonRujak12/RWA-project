@@ -1,18 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type ItemDocument = Item & Document;
+export type TodoDocument = Todo & Document;
 
 @Schema()
-export class Item {
+export class Todo {
     @Prop({ required: true })
-    name: string;
+    title: string;
 
-    @Prop()
+    @Prop({ required: true })
     description: string;
 
     @Prop({ required: true })
-    price: number;
+    projectName: string;
+
+    @Prop({ required: true, default: false })
+    isCompleted: boolean;
 }
 
-export const ItemSchema = SchemaFactory.createForClass(Item);
+export const TodoSchema = SchemaFactory.createForClass(Todo);
