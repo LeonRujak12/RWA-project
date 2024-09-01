@@ -44,14 +44,6 @@ export class TodolistComponent implements OnInit {
       this.taskArray.push(ta);
     })
 
-    /*
-    this.taskArray.push({
-      taskName: form.controls['task'].value,
-      taskDescription: form.controls['description'].value,
-      isCompleted: false
-    })
-    */
-
     form.reset();
   }
 
