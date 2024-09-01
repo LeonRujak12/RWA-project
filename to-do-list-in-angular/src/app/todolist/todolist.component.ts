@@ -29,12 +29,28 @@ export class TodolistComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     console.log(form);
+    const request =  {
+      taskName: form.controls['task'].value,
+      taskDescription: form.controls['description'].value,
+      isCompleted: false
+    }
+    this.todoService.postTodo(request).subscribe((data: any) => {
+      console.log("post je upalio", data);
+      const ta = {
+        taskName: data.title,
+        taskDescription: data.description,
+        isCompleted: data.isCompleted
+      }
+      this.taskArray.push(ta);
+    })
 
+    /*
     this.taskArray.push({
       taskName: form.controls['task'].value,
       taskDescription: form.controls['description'].value,
       isCompleted: false
     })
+    */
 
     form.reset();
   }
