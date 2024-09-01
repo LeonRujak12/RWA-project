@@ -1,21 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
+import { TodoService } from '../todo.service';
 @Component({
   selector: 'app-todolist',
   templateUrl: './todolist.component.html',
   styleUrls: ['./todolist.component.css']
 })
 export class TodolistComponent implements OnInit {
+
   taskArray = [
     { taskName: 'Brush teeth', taskDescription: "Ujutro operi zube", isCompleted: false },
     { taskName: 'napraviti da radi', taskDescription:"Neka radi", isCompleted: true}
 
   ];
 
-  constructor() { }
+  constructor(private todoService: TodoService) { }
 
   ngOnInit(): void {
+    this.todoService.getTodos().subscribe((data: any) => {
+      console.log("mislim da su stigli podaci", data);
+      //     { taskName: 'Brush teeth', taskDescription: "Ujutro operi zube", isCompleted: false },
+      const ta = data.map((task:any) => {
+        return {taskName: task.title, taskDescription: task.description, isCompleted: task.isCompleted}
+      })
+      this.taskArray = ta;
+    })
   }
 
   onSubmit(form: NgForm) {
