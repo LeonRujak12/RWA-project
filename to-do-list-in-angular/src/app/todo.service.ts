@@ -43,5 +43,21 @@ export class TodoService {
       throw ex
     }
   }
+  deleteTodo(todo:any): Observable<any> {
+    const header = new HttpHeaders();
+    header.set('Access-Control-Allow-Origin', '*');
+    header.set('Accept', 'application/json');
+
+    try {
+      const url = `${this.url}/${todo.id}`
+      console.log("deletam sa url", url)
+      const result =  this.http.delete(url, { headers: header });
+      console.log("got delete response from server", result)
+      return result
+    } catch (ex) {
+      console.log("delete exception:", ex)
+      throw ex
+    }
+  }
 
 }

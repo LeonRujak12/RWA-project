@@ -21,7 +21,12 @@ export class TodolistComponent implements OnInit {
       console.log("mislim da su stigli podaci", data);
       //     { taskName: 'Brush teeth', taskDescription: "Ujutro operi zube", isCompleted: false },
       const ta = data.map((task:any) => {
-        return {taskName: task.title, taskDescription: task.description, isCompleted: task.isCompleted}
+        return {
+          id: task._id,
+          taskName: task.title,
+          taskDescription: task.description,
+          isCompleted: task.isCompleted
+        }
       })
       this.taskArray = ta;
     })
@@ -49,8 +54,10 @@ export class TodolistComponent implements OnInit {
 
   onDelete(index: number) {
     console.log(index);
-
-    this.taskArray.splice(index, 1);
+    this.todoService.deleteTodo(this.taskArray[index]).subscribe((data: any) => {
+      console.log("delete je upalio", data);
+      this.taskArray.splice(index, 1);
+    })
   }
 
   onCheck(index: number) {
