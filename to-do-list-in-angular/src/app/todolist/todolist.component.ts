@@ -42,6 +42,7 @@ export class TodolistComponent implements OnInit {
     this.todoService.postTodo(request).subscribe((data: any) => {
       console.log("post je upalio", data);
       const ta = {
+        id: data._id,
         taskName: data.title,
         taskDescription: data.description,
         isCompleted: data.isCompleted
