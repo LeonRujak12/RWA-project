@@ -62,9 +62,14 @@ export class TodolistComponent implements OnInit {
   }
 
   onCheck(index: number) {
-    console.log(this.taskArray);
-
-    this.taskArray[index].isCompleted = !this.taskArray[index].isCompleted;
+    const task = {...this.taskArray[index]};
+    task.isCompleted = !task.isCompleted
+    this.todoService.updateTodo(task).subscribe((data: any) => {
+      console.log("update je upalio", data);
+      const taskArray = [...this.taskArray]
+      taskArray[index] = task
+      this.taskArray = taskArray
+    })
   }
 
 }

@@ -59,5 +59,26 @@ export class TodoService {
       throw ex
     }
   }
+  updateTodo(todo:any): Observable<any> {
+    const header = new HttpHeaders();
+    header.set('Access-Control-Allow-Origin', '*');
+    header.set('Accept', 'application/json');
+
+    try {
+      const body = {
+        title: todo.taskName,
+        description: todo.taskDescription,
+        projectName: 'never ending story',
+        isCompleted: todo.isCompleted
+      }
+      const url = `${this.url}/${todo.id}`
+      const result =  this.http.put(url, body, { headers: header });
+      console.log("got response from server", result)
+      return result
+    } catch (ex) {
+      console.log("fetch exception:", ex)
+      throw ex
+    }
+  }
 
 }
